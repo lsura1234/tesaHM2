@@ -19,12 +19,16 @@ router.post("/receiveData", function (req, res) {
     
 })
 
-router.get("/showData", function (res, req) {
-  var data = temp.find()
-  console.log(data)
+router.get("/showData", async function (req, res) {
+  var data = await temp.find({})
+  res.send(data)
+  res.end()
 })
-router.post("/addData", function (req, res) {
-
+router.post("/addData", async function (req, res) {
+  var newData = req.body
+  var data = await temp.create(newData)
+  res.send(data)
+  res.end()
 })
 router.put("/editData/:teamID", function (req, res) {
     var id = parseInt(req.params.teamID)
