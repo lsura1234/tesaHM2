@@ -2,11 +2,16 @@ var express = require('express');
 var _ = require('lodash')
 var body = require('body-parser');
 app = express();
-var app = express();
-
+var mongoose = require('mongoose')
 app.use(body.json());
-app.post("/receiveData", function (req, res) {
+mongoose.Promise = global.Promise;
 
+mongoose.connect('mongodb://al:allee@host:12017/hmDATA', {
+    connectTimeoutMS: 1000
+})
+app.post("/receiveData", function (req, res) {
+    var data = req.body
+    res.send(data);
 })
 app.get("/showData", function (res, req) {
 
