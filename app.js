@@ -3,7 +3,7 @@ var body = require('body-parser');
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-mongoose.connect('mongodb://user1:12345678@localhost/hwData')
+mongoose.connect('mongodb://al:allee@localhost/hwData')
   .then(() =>  console.log('connection succesful for hwData'))
   .catch((err) => console.error(err));
 
