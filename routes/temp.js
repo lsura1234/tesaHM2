@@ -15,6 +15,7 @@ router.post("/receiveData", function (req, res) {
     //     }
     //   });
     //console.log(data)
+    console.log(data)
     res.send(data);
     
 })
