@@ -1,5 +1,34 @@
 var express = require('express');
+var _ = require('lodash')
+var body = require('body-parser');
 app = express();
+var app = express();
+
+app.use(body.json());
+app.post("/receiveData", function (req, res) {
+
+})
+app.get("/showData", function (res, req) {
+
+})
+app.post("/addData", function (req, res) {
+
+})
+app.put("/editData/:teamID", function (req, res) {
+    var id = parseInt(req.params.teamID)
+    console.log(id);
+
+})
+app.put("/deleteData/:teamID", function (req, res) {
+    var id = parseInt(req.params.teamID)
+})
+var server = app.listen(8080, function () {
+    var port = server.address().port
+    console.log('Sample test', port);
+});
+
+
+
 //var  = require('path');
 //var favicon = require('serve-favicon');
 //var logger = require('morgan');
