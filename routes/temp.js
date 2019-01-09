@@ -17,13 +17,26 @@ router.post("/addData", async function (req, res) {
   res.send(data)
   res.end()
 })
-router.put("/editData/:teamID", function (req, res) {
-    var id = parseInt(req.params.teamID)
-    console.log(id);
-
+router.put("/editData/:teamID", async function (req, res) {
+    var id = req.params.teamID
+    var newTemp = req.body
+    var data = await temp.updateOne({teamID: id}, {temp: newTemp.temp})
+    if(data.n === 0){
+      res.send("Don't have this ID")
+    } else {
+      res.send("Edited Success")
+    }
+    res.end()
 })
-router.put("/deleteData/:teamID", function (req, res) {
-    var id = parseInt(req.params.teamID)
+router.delete("/deleteData/:teamID", async function (req, res) {
+    var id = req.params.teamID
+    var data = await temp.deleteOne({teamID: id})
+    if(data.n === 0){
+      res.send("Don't have this ID")
+    } else {
+      res.send("Deleted Successful")
+    }
+    res.end()
 })
 
 module.exports = router;
