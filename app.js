@@ -5,11 +5,7 @@ var mongoose = require('mongoose')
 app.use(body.json());
 mongoose.Promise = global.Promise;
 
-<<<<<<< HEAD
 mongoose.connect('mongodb://al:allee@localhost/hwData')
-=======
-mongoose.connect('mongodb://al:allee@localhost/hwDATA')
->>>>>>> 279304bd6189f7a93287ce9c1ef66174ede002ba
   .then(() =>  console.log('connection succesful for hwData'))
   .catch((err) => console.error(err));
 
