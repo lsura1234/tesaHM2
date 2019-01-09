@@ -2,21 +2,13 @@ var express = require('express');
 var router = express.Router();
 var temp = require("../models/temp");
 
-router.post("/receiveData", function (req, res) {
-    var data = req.body
-    // var Temp = new temp(data);
-    // Temp.save(function(err) {
-    //     if(err) {
-    //       console.log(err);
-    //       // res.render("../views/employees/create");
-    //     } else {
-    //       console.log("Successfully created an tmep.");
-    //       //res.redirect("/employees/show/"+employee._id);
-    //     }
-    //   });
-    //console.log(data)
-    console.log(data)
-    res.send(data);
+router.post("/receiveData", async function (req, res) {
+  var data = req.body
+  var id = data.DevEUI_uplink.payload_parsed.frames[0].value
+  var temp = data.DevEUI_uplink.payload_parsed.frames[1].value
+  var dataHW = await temp.create({teamID: id, temp})
+  res.send(dataHW);
+  res.end()
     
 })
 
