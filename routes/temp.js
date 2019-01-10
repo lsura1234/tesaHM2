@@ -9,7 +9,6 @@ router.post("/receiveData", async function (req, res) {
   var dataHW = await temp.create({teamID: id, temp})
   res.send(dataHW);
   res.end()
-    
 })
 
 router.get("/showData", async function (req, res) {
