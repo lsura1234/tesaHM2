@@ -13,7 +13,9 @@ router.post("/putSanam", async function (req, res) {
   }
   var dataHW = await beacon.create({ "P-IN": p_in, "P-OUT": p_out })
   //sendData
+  
   sendDate = dataHW.Timestamp.toString();
+  
   month = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
   showMonth = sendDate.substr(4, 3)
@@ -37,7 +39,13 @@ router.post("/putSanam", async function (req, res) {
   console.log(showdata)
 
   res.send(showdata)
-
+  beacon.findById(dataHW._id, function (err, Filed) {
+    Filed.Timestamp=`${year}-${showMonth}-${day}T${hour}:${min}:${sec}`
+    Filed.save(function (err, updateDate) {
+      if (err) return handleError(err);
+      console.log(updateDate)
+    })
+  })
   res.end()
 })
 
