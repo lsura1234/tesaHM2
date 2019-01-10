@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var beacon = require("../../models/beacon");
+var sensor = require("../../models/sensor");
+var moment = require("moment")
 
 router.post("/putSanam", async function (req, res) {
   var data = req.body
@@ -46,6 +48,25 @@ router.post("/putSanam", async function (req, res) {
       console.log(updateDate)
     })
   })
+  res.end()
+})
+
+router.get("/adminMon", async function (req, res) {
+  // find data in beaconData
+ var beacons = await beacon.find({
+  Timestamp: {
+    $gte: new Date((Date.now() - (parseInt(1) * 60 * 60 * 1000)))
+  }
+})
+  var p_in =  beacons.map(item => item['P-IN']).reduce((prev, next) => prev + next)
+  var p_out =  beacons.map(item => item['P-OUT']).reduce((prev, next) => prev + next);
+  beacons = {
+    p_in,
+    p_out
+  }
+ // find lastest data
+  var sensors = await sensor.findOne().sort({ field: 'asc', Timestamp: -1 }).limit(1)
+  res.send({beacons, sensors})
   res.end()
 })
 
