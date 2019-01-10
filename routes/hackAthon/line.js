@@ -12,8 +12,8 @@ router.post("/putSanam", async function (req, res) {
     p_in = 0, p_out = 1
   }
   var dataHW = await beacon.create({ "P-IN": p_in, "P-OUT": p_out })
-  console.log(data)
   console.log(dataHW)
+  res.send(dataHW)
 
   res.end()
 })
