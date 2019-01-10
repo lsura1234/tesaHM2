@@ -6,7 +6,7 @@ var moment = require("moment")
 
 router.post("/putSanam", async function (req, res) {
   var data = req.body
-  console.log(data)
+  //console.log(data)
   var type = data.beacon.status
   if (type === "enter") {
     p_in = 1, p_out = 0
