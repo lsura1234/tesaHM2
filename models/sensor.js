@@ -1,13 +1,8 @@
 var mongoose = require('mongoose');
 
-var SchemaTypes = mongoose.Schema.Types;
 var SensorSchema = new mongoose.Schema({
-  Temperature: {
-    type: SchemaTypes.Double
-},
-  Humidity: {
-    type: SchemaTypes.Double
-},
+  Temperature: Number,
+  Humidity: Number,
   "P-IN": Number,
   "P-OUT": Number,
   Timestamp: { type : Date, default: Date.now }
