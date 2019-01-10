@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var SchemaTypes = mongoose.Schema.Types;
-var TempSchema = new mongoose.Schema({
+var SensorSchema = new mongoose.Schema({
   Temperature: {
     type: SchemaTypes.Double
 },
@@ -13,4 +13,4 @@ var TempSchema = new mongoose.Schema({
   Timestamp: { type : Date, default: Date.now }
 });
 
-module.exports = mongoose.model('SensorData', TempSchema);
+module.exports = mongoose.model('SensorData', SensorSchema);

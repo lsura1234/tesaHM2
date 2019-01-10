@@ -10,12 +10,16 @@ mongoose.connect('mongodb://al:allee@localhost/hwData')
   .catch((err) => console.error(err));
 
 var temp = require('./routes/temp')
+var sensor = require('./routes/hackAthon/sensor')
+var line = require('./routes/hackAthon/line')
 
 app = express();
 var app = express();
 
 app.use(body.json());
 app.use('/', temp);
+app.use('/sensor', sensor);
+app.use('/line', line);
 
 var server = app.listen(8080, function () {
     var port = server.address().port
