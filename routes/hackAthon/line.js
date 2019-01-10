@@ -160,7 +160,8 @@ router.get("/getSanam", async function (req, res) {
 })
 
 router.get("/predict", async function (req, res) {
-
+  res.send()
   res.end()
 })
+
 module.exports = router;
