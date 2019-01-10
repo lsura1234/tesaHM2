@@ -15,9 +15,9 @@ router.post("/putSanam", async function (req, res) {
   }
   var dataHW = await beacon.create({ "P-IN": p_in, "P-OUT": p_out })
   //sendData
-  
+
   sendDate = dataHW.Timestamp.toString();
-  
+
   month = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
   showMonth = sendDate.substr(4, 3)
@@ -32,8 +32,15 @@ router.post("/putSanam", async function (req, res) {
     day--
     hour = 24 - 7 + parseInt(hour)
   }
+  //set2 8 ->08
+  if (hour < 10) {
+    hour = `0${hour}`
+  }
   if (showMonth < 10) {
     showMonth = `0${showMonth}`
+  }
+  if(day  < 10){
+    day=`0${day}`
   }
   sendDate = `${year}-${showMonth}-${day} ${hour}:${min}:${sec}`;
   showdata = {}
@@ -41,8 +48,20 @@ router.post("/putSanam", async function (req, res) {
   console.log(showdata)
 
   res.send(showdata)
+  hour = parseInt(hour) + 7
+  if (parseInt(hour) > 24) {
+    hour = parseInt(hour )-24
+    day = parseInt(day)+1
+  }
+  if (hour < 10) {
+    hour = `0${hour}`
+  }
+  if (day < 10) {
+    day = `0${day}`
+  }
+  console.log("day is "+day+" time :"+hour)
   beacon.findById(dataHW._id, function (err, Filed) {
-    Filed.Timestamp=`${year}-${showMonth}-${day}T${hour}:${min}:${sec}`
+    Filed.Timestamp = `${year}-${showMonth}-${day}T${hour}:${min}:${sec}`
     Filed.save(function (err, updateDate) {
       if (err) return handleError(err);
       console.log(updateDate)
@@ -53,20 +72,20 @@ router.post("/putSanam", async function (req, res) {
 
 router.get("/adminMon", async function (req, res) {
   // find data in beaconData
- var beacons = await beacon.find({
-  Timestamp: {
-    $gte: new Date((Date.now() - (parseInt(1) * 60 * 60 * 1000)))
-  }
-})
-  var p_in =  beacons.map(item => item['P-IN']).reduce((prev, next) => prev + next)
-  var p_out =  beacons.map(item => item['P-OUT']).reduce((prev, next) => prev + next);
+  var beacons = await beacon.find({
+    Timestamp: {
+      $gte: new Date((Date.now() - (parseInt(1) * 60 * 60 * 1000)))
+    }
+  })
+  var p_in = beacons.map(item => item['P-IN']).reduce((prev, next) => prev + next)
+  var p_out = beacons.map(item => item['P-OUT']).reduce((prev, next) => prev + next);
   beacons = {
     p_in,
     p_out
   }
- // find lastest data
+  // find lastest data
   var sensors = await sensor.findOne().sort({ field: 'asc', Timestamp: -1 }).limit(1)
-  res.send({beacons, sensors})
+  res.send({ beacons, sensors })
   res.end()
 })
 
