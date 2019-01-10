@@ -12,8 +12,31 @@ router.post("/putSanam", async function (req, res) {
     p_in = 0, p_out = 1
   }
   var dataHW = await beacon.create({ "P-IN": p_in, "P-OUT": p_out })
-  console.log(dataHW)
-  res.send(dataHW)
+  //sendData
+  sendDate = dataHW.Timestamp.toString();
+  month = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+  showMonth = sendDate.substr(4, 3)
+  showMonth = month.indexOf(showMonth)
+
+  year = sendDate.substr(11, 4)
+  day = sendDate.substr(8, 2)
+  hour = sendDate.substr(16, 2)
+  min = sendDate.substr(19, 2)
+  sec = sendDate.substr(22, 2)
+  if (hour < 7) {
+    day--
+    hour = 24 - 7 + parseInt(hour)
+  }
+  if (showMonth < 10) {
+    showMonth = `0${showMonth}`
+  }
+  sendDate = `${year}-${showMonth}-${day} ${hour}:${min}:${sec}`;
+  showdata = {}
+  showdata["beacon"] = { "datetime": sendDate, "status": type }
+  console.log(showdata)
+
+  res.send(showdata)
 
   res.end()
 })
