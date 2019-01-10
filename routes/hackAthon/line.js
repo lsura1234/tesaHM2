@@ -35,13 +35,13 @@ router.post("/putSanam", async function (req, res) {
       pOut = 1
     }
     var dataHW = await beacon.create({ "P-IN": pIn, "P-OUT": pOut })
-    // sendData
+    // // sendData
     sendDate = dataHW.Timestamp.toString();
     month = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
     showMonth = sendDate.substr(4, 3)
     showMonth = month.indexOf(showMonth)
-
+    
     year = sendDate.substr(11, 4)
     day = sendDate.substr(8, 2)
     hour = sendDate.substr(16, 2)
@@ -51,18 +51,39 @@ router.post("/putSanam", async function (req, res) {
       day--
       hour = 24 - 7 + parseInt(hour)
     }
+    //set2 8 ->08
+    if (hour < 10) {
+      hour = `0${hour}`
+    }
     if (showMonth < 10) {
       showMonth = `0${showMonth}`
+    }
+    if (day < 10) {
+      day = `0${day}`
     }
     sendDate = `${year}-${showMonth}-${day} ${hour}:${min}:${sec}`;
     showdata = {}
     showdata["beacon"] = { "datetime": sendDate, "status": type }
-    res.send(showdata)
-  }
 
-  
-  res.end()
-})
+    hour = parseInt(hour) + 14
+    if (parseInt(hour) > 23) {
+      hour = parseInt(hour) - 24
+      day = parseInt(day) + 1
+    }
+    if (hour < 10) {
+      hour = `0${hour}`
+    }
+    if (day < 10) {
+      day = `0${day}`
+    }
+    console.log("day is " + day + " time :" + hour)
+    console.log(dataHW._id)
+    await beacon.update({_id: dataHW._id}, {Timestamp: `${year}-${showMonth}-${day}T${hour}:${min}:${sec}`})
+    var nowData = await beacon.find({_id: dataHW._id})
+    res.send(nowData)
+  }
+    res.end()
+  })
 
 router.get("/adminMon", async function (req, res) {
   // find data in beaconData
